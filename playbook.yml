@@ -1,0 +1,36 @@
+site:
+  title: OSCP notes
+  # the 404 page and sitemap files only get generated when the url property is set
+  start_page: home::todos.adoc
+
+content:
+  sources:
+  - url: .
+    branches: HEAD
+    start_path: home
+  - url: .
+    branches: HEAD
+    start_path: pwk_network
+  - url: .
+    branches: HEAD
+    start_path: ftp
+  - url: .
+    branches: HEAD
+    start_path: privilege_escalation
+  - url: .
+    branches: HEAD
+    start_path: metasploit
+  - url: .
+    branches: HEAD
+    start_path: shell_spawn
+
+output:
+  dir: ./output
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  output_dir: ui-bundle
+  supplemental_files: ./supplemental-ui
+
+  

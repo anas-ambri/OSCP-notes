@@ -1,0 +1,5 @@
+name: metasploit
+title: Metasploit
+version: master
+nav:
+- modules/ROOT/nav.adoc

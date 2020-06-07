@@ -1,9 +1,9 @@
-# Anonymous FTP
+= Anonymous FTP
 
 Anonymous FTP is a service provided by archive sites to allow any users to access them.
 They include a special guest account called "anonymous". The password can be either "guest" or an email address
 
-## NMAP
+== NMAP
 
 The command `nmap -sV -sC <target>` might output:
 
@@ -19,5 +19,3 @@ PORT   STATE SERVICE
 | drwxr-sr-x   2 1170     924          1024 Aug  5  2004 pub
 |_Only 6 shown. Use --script-args ftp-anon.maxlist=-1 to see all.
 ```
-
-##

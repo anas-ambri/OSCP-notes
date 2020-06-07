@@ -1,0 +1,5 @@
+name: shell-spawn
+title: Shell Spawn code snippets
+version: master
+nav:
+- modules/ROOT/nav.adoc

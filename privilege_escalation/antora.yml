@@ -1,0 +1,5 @@
+name: privilege-escalation
+title: Privilege Escalation
+version: master
+nav:
+- modules/ROOT/nav.adoc
