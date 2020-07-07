@@ -1,0 +1,5 @@
+name: exercises
+title: Exercise Solutions
+version: master
+nav:
+- modules/ROOT/nav.adoc

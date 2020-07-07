@@ -1,0 +1,33 @@
+= Kali Linux
+
+== Useful commands
+
+- `man <command>` for the man page of a command
+- `man -k '<regex>'` to search for expression in all manuals
+This will give the output with section number
+- `man <section-number> <command>` for the appropriate section
+
+- `apropos <keyword>` to search man pages descriptions for keyword
+
+- `which` looks for files in the PATH
+
+- `locate` searches among common folders
+
+== Services
+
+Kali linux comes with `mysql`, `ssh` (port 22) & `http`(port 80) services
+
+- `sudo systemctl start ssh/apache2` to start ssh/http service
+- `sudo systemctl start ssh` to enable ssh service to start on reboot
+- `ss` for socket statistics
+- `systemctl list-unit-files` to list all services
+
+== APT
+
+- `apt update` updates the local cache of packages listing
+- `apt upgrade <package>` updates the package
+- `apt-cache search <keyword>` looks in packages' descrition for keyword
+- `apt show <package>`
+- `apt install <package>` to install a package
+- `apt remove --purge <package>`
+- Use `dpkg` to install local `.deb` file

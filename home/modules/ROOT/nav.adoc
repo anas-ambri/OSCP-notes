@@ -1,2 +1,5 @@
 * xref:index.adoc[TODO]
 * xref:process.adoc[Process to follow]
+* xref:kali_linux.adoc[Kali Linux intro]
+* xref:command_line.adoc[Command line]
+* xref:practical_tools.adoc[Practical Tools (nc, socat, wireshark, tcpdump)]

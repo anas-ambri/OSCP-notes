@@ -1,0 +1,47 @@
+= Command Line
+
+== Bash
+
+- `export IP=10.0.1.1; ping -c 2 $IP` to create & reference a variable
+- `env` lists all predefined environment variables
+- `history` gives a history of commands, `!<line_number>` will re-run that command
+- `.bash_history` contains a history of commands
+- `$HISTSIZE` & `$HISTFILESIZE` are env variables to determine history (in memory) & history file size
+- `$HISTIGNORE` is a ':'-separated list of commands that are not saved to history
+- `alias lsa='ls -la'` creates an alias
+
+== Stardard data stream
+
+- `wc -m < <file>` redirects file content to STDIN of `wc` command
+- STDIN = `$0`, STDOUT = `$1`, STDERR = `$2`
+- `|` allows output of one command to be piped into input of another
+
+== Text search & manipulation
+
+- `cut -d ":" -f 1 /etc/passwd` list split on ":" and return field at position 1
+- awk is a programming language. 
+- `awk -F ":" '{print $1,$3}'` does the same as above. awk can take delimiters longer than 1 character
+
+== File comparison
+
+- `comm file1 file2` to compare 2 files. `comm -12 ...` to suppress the first 2 columns
+- `diff -u file1 file2`
+- `vimdiff file1 file2`
+** `ctrl + w + right_arrow` to switch panes
+** `[ + C` & `] + C` to jump to previous/next change
+
+== Background processes
+
+- A long running command can be paused with `ctrl + Z`, and moved to the background using `bg`
+- `jobs` list all paused jobs in current session
+- `fg %<number>` can resume a job in foreground
+
+== Command watching
+
+- `watch -n<X> <command>` will execute a command every X seconds
+
+== Downloading files
+
+- `wget -O <filename> <destination>`
+- `curl -o <filename> <destination>`
+- `axel -a -n <X> -o <filename> <destination>` downloads file using X number of connections

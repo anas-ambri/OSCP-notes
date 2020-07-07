@@ -1,0 +1,8 @@
+= Solutions to exercises from Chapter 2: Getting Comfortable with Linux
+
+== 2.4.3.4
+
+1. `man ls`
+2. `man compress`
+3. `which pwd` -> `/bin/pwd`
+4. 
