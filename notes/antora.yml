@@ -1,0 +1,5 @@
+name: notes
+title: Class notes
+version: master
+nav:
+- modules/ROOT/nav.adoc

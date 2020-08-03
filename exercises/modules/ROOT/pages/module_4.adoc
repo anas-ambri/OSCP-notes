@@ -28,11 +28,13 @@ login
 user anonymous
 +OK Name is a valid mailbox
 ```
-4. Display filter is `tcp.port == 110`
-5. Capture filter is `port 110`
+4.Display filter is `tcp.port == 110`
+
+5.Capture filter is `port 110`
 
 == 4.5.3.1
 
 1. `tcpdump -n -i tun0` to listen to traffic on the VPN tunnel
 2. `tcpdump -n -i tun0 -X` shows the content of each packet
-3.
+3. `tcpdump -r /root/hashes/password_cracking_filtered.pcap 'tcp[13]=12'`
+4. `tcpdump 'tcp[tcpflags] & (tcp-ack|tcp-push) != 0' -r /root/hashes/password_cracking_filtered.pcap`

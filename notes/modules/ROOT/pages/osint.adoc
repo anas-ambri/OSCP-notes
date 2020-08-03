@@ -1,0 +1,25 @@
+= OSINT
+
+OSINT = Open-Source Intelligence
+
+== Process of enumeration
+
+- `whois <domain>` to find registrar information
+- `whois <ip>` to find domain registered under IP address
+
+== Google hacking
+
+- `site:<domain> filetype:php -filetype:hml`
+- `intitle:"index of" "parent directory"
+
+More exploits https://www.exploit-db.com/google-hacking-database[here]
+
+== Netcraft
+
+searchdns.netcraft.com
+
+== theharvester
+
+`theharvester -d <domain> -b <data-source>`
+
+

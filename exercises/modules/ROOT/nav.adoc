@@ -1,2 +1,4 @@
 * xref:module_2.adoc[Module 2]
 * xref:module_3.adoc[Module 3]
+* xref:module_4.adoc[Module 4]
+* xref:module_5.adoc[Module 5]

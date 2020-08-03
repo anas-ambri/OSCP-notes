@@ -1,0 +1,60 @@
+= Bash Scripting
+
+== Command expansion
+
+- `echo "$(seq 1 10)"` will expand the result 
+
+== Bash variables
+
+- `$<x>` is the xth argument to the script
+- `$?` is the exit code for last executed process
+- `$RANDOM` gives a random number
+- `$@` all arguments passed to the script
+- `$#` is the number of arguments passed
+- `$$` is the process id of current script
+- `$USER` is the name of the user running the script
+- `$HOSTNAME` is the hostname of the machine
+
+== Reading input in bash
+
+- `read <variable>`
+- `read -p <prompt>` to specify a prompt
+- `read -s` to silence input (e.g. for password input)
+
+== if/elif/else
+
+```
+if [ <test> ]
+then
+  <command>
+elif [ <test> ]
+then
+  <command>
+else
+  <command>
+fi
+```
+
+== for
+
+`for i in {1..10}; do echo "10.1.1.$i";done`
+
+== while
+
+```
+while [ <test> ]
+do
+  <command>
+done
+```
+
+== Functions
+
+```
+<function-name> () {
+  <body>
+}
+
+== Local variables
+
+`local <variable>=<value>` only affects the local scope of the function.

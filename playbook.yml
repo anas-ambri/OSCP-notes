@@ -1,13 +1,13 @@
 site:
   title: OSCP notes
   # the 404 page and sitemap files only get generated when the url property is set
-  start_page: home::todos.adoc
+  start_page: pwk-network::index.adoc
 
 content:
   sources:
   - url: .
     branches: HEAD
-    start_path: home
+    start_path: notes
   - url: .
     branches: HEAD
     start_path: pwk_network
@@ -23,6 +23,9 @@ content:
   - url: .
     branches: HEAD
     start_path: shell_spawn
+  - url: .
+    branches: HEAD
+    start_path: exercises
 
 output:
   dir: ./output

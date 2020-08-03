@@ -1,0 +1,28 @@
+= Solutions to exercises from Chapter 6: OSINT
+
+== 6.3.1.1
+
+`whois megacorpone.com  | grep "Name Server" | uniq`
+
+== 6.4.1.1
+
+1. `Name: Mike Carlow. Title: VP Of Legal Email: mcarlow@megacorpone.com`
+2. `site:www.megacorpone.com php` reveals a `nanites.php` file
+3.  Dr. Fred Godden
+
+== 6.5.1.1
+
+1. Apache
+
+== 6.7.1.1
+
+1. One of the people who starred Megacorpone's repository happens to be the company's sysadmin. His name is Rene Sauns.
+
+== 6.12.1.1
+
+1. theharvester wasn't able to find any additional email addresses
+2. Google seems to be working best `-b google`
+
+== 6.13.2.1
+
+1. William Alder is an employee at Megacorpone
