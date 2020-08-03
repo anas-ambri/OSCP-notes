@@ -1,0 +1,61 @@
+= Solutions to exercises from Chapter 3: Command Line Fun
+
+== 3.1.3.2
+
+1. `history` && `!89`
+2. `ls`
+    `Ctrl+R`: `l`
+
+== 3.2.5.1
+
+1. `cat /etc/passwd | sort`
+2. `cat /etc/passwd | sort > /home/kali`
+
+== 3.3.5.1
+
+1. `cat /etc/passwd | grep "/bin/false" | awk -F ":" '{print "The user "$1" home directory is " $6}'`
+2. `cp /etc/passwd /home/kali/passwd`
+3. `cat passwd | sed 's/Gnome Display Manager/GDM/'
+
+== 3.5.3.1
+
+1. wget https://offensive-security.com/pwk-files/scans.tar.gz
+2. `gunzip scans.tar.gz && tar -xvf scans.tar`
+   `diff -u 10.11.1.118_scan_01.txt 10.11.1.118_scan_02.txt`
+   The first diff reveals that the first scan failed after 3 seconds, because the IP didn't send any response back.
+   On the second scan (6 minutes later), many more ports were opened, revealing multiple Microsoft services.
+
+   `diff -u 10.11.1.234_scan_01.txt 10.11.1.234_scan_02.txt`
+   The second diff reveals a new service listening on port 1337
+
+   `diff -u 10.11.1.8_scan_01.txt 10.11.1.8_scan_02.txt`
+   The third diff shows that a potential mysql service running on port 3306 was closed by the time the second scan happened
+
+== 3.6.3.1
+
+1. `find / -mtime 7 &`
+2. `find / -mtime 7` 
+   `Ctrl+Z`
+   `bg`
+3. `fg %1`
+4. `ps aux | grep firefox-esr` ->
+    `root     14316  4.7 16.1 1890272 501096 tty2   Sl+  Jul18  79:10 /usr/lib/firefox-esr/firefox-esr`
+5. `kill  -9 14316`
+
+== 3.7.2.1
+
+1. `service apache2 start && tail -f /var/log/apache2/access.log`
+2. `watch -n 1 ps aux --sort=-pcpu`
+
+== 3.8.3.1
+
+1.
+`wget -0 exploit_48676_wget.py https://exploit-db.com/download/48676`
+`curl -o exploit_48676_curl.py https://exploit-db.com/download/48676`
+`axel -a -n 10 -o exploit_48676_axel.py https://exploit-db.com/download/48676`
+
+== 3.9.3.1
+
+1. `echo "alias parent='cd ..'" >> /home/kali/.bashrc && source /home/kali/.bashrc`
+2. `echo "HISTFILESIZE=10000" >> /home/kali/.bashrc && echo "HISTTIMEFORMAT='%F'" >> /home/kali/.bashrc && source /home/kali/.bashrc
+

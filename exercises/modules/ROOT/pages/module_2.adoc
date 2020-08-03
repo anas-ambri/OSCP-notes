@@ -5,4 +5,5 @@
 1. `man ls`
 2. `man compress`
 3. `which pwd` -> `/bin/pwd`
-4. 
+4. `locate wce32.exe` -> `/usr/share/wce/wce32.exe`
+5. `find / -mtime -1 -ls ! -user root`
