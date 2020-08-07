@@ -1,5 +1,6 @@
 name: notes
 title: Class notes
 version: master
+start_page: kali_linux.adoc
 nav:
 - modules/ROOT/nav.adoc

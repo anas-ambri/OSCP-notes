@@ -1,0 +1,21 @@
+= Home
+
+== DNS Enumeration
+
+include::partial$dns_enumeration.adoc[]
+
+== NMap Enumeration
+
+include::partial$nmap_enumeration.adoc[]
+
+== SMB enumeration
+
+include::partial$smb_enumeration.adoc[]
+
+== NFS enumeration
+
+include::partial$nfs_enumeration.adoc[]
+
+== SNMP
+
+include::partial$snmp_enumeration.adoc[]

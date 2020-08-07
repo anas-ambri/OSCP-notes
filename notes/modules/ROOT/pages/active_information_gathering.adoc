@@ -1,0 +1,88 @@
+= Active Information Gathering
+
+== DNS enumeration
+
+```
+process <--> OS' DNS client <--> external DNS server (contains DNS recursor)
+(cache)         (cache)                         ^
+                                                |
+                                                |
+                                                v
+                                        DNS infrastructure
+```
+
+- `Time To Live (TTL)` field on DNS record determines how long a DNS record is cached
+- Forward lookup is turning a hostname into an IP
+- Reverse lookup is turning an IP into a hostname
+
+- `host <domain>` gives IP address
+- `host -t (mx,txt) <domain>` gives MX/TXT field
+- `host -t ns <domain>` gives DNS servers for domain
+- `host -l <domain> <dns server>` to attempt a DNS zone transfer
+
+include::enumeration::partial$dns_enumeration.adoc[]
+
+== Port scanning with Netcat
+
+=== TCP
+
+- `nc -nv -w 1 -z <IP> <PORT>-<PORT>` to scan a range of ports with 1 second timeout and no data exchange
+
+=== UDP
+
+- `nc -nv -w 1 -z -u IP` for UDP scan
+
+Behind firewall, UDP may not respond, which is sometimes treated as open port by some tools
+
+== Port scanning with Nmap
+
+- `nmap -sS <IP>` sends just a SYN packet to TCP ports, which doesn't require a three-way handshake.
+This is stealth scanning
+- `nmap -sT <IP>` uses the usual TCP threeway handshake
+- `nmap -sU -sS <IP>` to include UDP scans as well
+- `nmap -p <PORT> <IP>` specifies the port
+- `nmap -oG <file> <IP_range>` to output to file the scan of the range
+- `nmap --top-ports=N` focuses on the top N ports
+- `nmap -A` to enable application fingerprinting
+- `nmap -O` to enable OS fingerprinting
+- `nmap -sV` can determine version of service on port
+- `nmap -iL <file>` scan IPs in file
+
+include::enumeration::partial$nmap_enumeration.adoc[]
+
+=== NMap NSE scripts
+
+- `nmap --script=<script>` runs a script from `/usr/share/nmap/scripts`
+- `nmap --script-help=<script>` for help
+
+== SMB enumeration
+
+SMB and NetBios are usually running hand in hand. SMB is on port 445, NetBios on 137. NetBios is used for creating a shared network
+
+include::enumeration::partial$smb_enumeration.adoc[]
+
+NMAP NSE also has scripts that can detect OS versions & vulns
+
+== NFS enumeration
+
+NFS is a distributed file sharing protocol on UNIX machines for mounting remote shares. It uses portmapper and RPCBind on port 111.
+
+The process is usually:
+
+- Service starts on a port, and register the port and RPC program number they're expecting to serve.
+- Client contacts RPCBind with the program number
+- RPCBind forward the client to the port number (often TCP/2049)
+
+include::enumeration::partial$nfs_enumeration.adoc[]
+
+== SMTP enumeration
+
+SMTP runs on port 25. We can connect to it and ask it to verify the existence of a user for us.
+
+`VRFY <user>`
+
+== SNMP enumeration
+
+SNMP uses UDP to configure the network. UDP is stateless, so easier for spoofing
+
+include::enumeration:partial$snmp_enumeration.adoc[]

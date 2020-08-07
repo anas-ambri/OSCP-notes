@@ -3,3 +3,6 @@
 * xref:practical_tools.adoc[Practical Tools (nc, socat, wireshark, tcpdump)]
 * xref:bash_scripting.adoc[Bash scripting]
 * xref:osint.adoc[OSINT]
+* xref:active_information_gathering.adoc[Active Information Gathering]
+* xref:vulnerability_scanning.adoc[Vulnerability Scanning]
+* xref:web_app_attacks.adoc[Web App Attacks]

@@ -1,0 +1,16 @@
+Ping sweep in IP range
+
+`nmap -nvv -sn <IP_range> -oG nmap_output.txt`
+
+Ports 80 on in IP range
+
+`nmap -nvv -sS -sV -sU -O -A <IP_range> -p80 -oG nmap_output.txt`
+
+All ports on IP
+
+`nmap -nvv -sS -sV -sU -O -A <IP> -oG nmap_output.txt`
+
+Filter out closed ports
+
+`cat nmap_output.txt | grep -v "Down" > nmap_up.txt`
+

@@ -2,20 +2,22 @@
 
 == 5.7.3.1
 
-1. `for i in {0..24}; do fping 10.11.1.$i;done`
-2. In python
+1.`for i in {0..24}; do fping 10.11.1.$i;done`
+2.In python
 
 ```
 for i in range(0,24):
    subprocess.call(["fping", "10.11.1."+str(i)])
 ```
+
 3.
 ```
 wget http://www.offensive-security.com/pwk-files/access_log.txt.gz
 gunzip access_log.txt.gz
 grep -o "/.*\.js" access_log.txt | awk -F "/" '{print $5}' | sort -u
 ```
-4. In python
+
+4.In python
 ```
 import urllib
 import subprocess

@@ -11,21 +11,24 @@ content:
   - url: .
     branches: HEAD
     start_path: pwk_network
-  - url: .
-    branches: HEAD
-    start_path: ftp
-  - url: .
-    branches: HEAD
-    start_path: privilege_escalation
-  - url: .
-    branches: HEAD
-    start_path: metasploit
-  - url: .
-    branches: HEAD
-    start_path: shell_spawn
+#  - url: .
+#    branches: HEAD
+#    start_path: ftp
+#  - url: .
+#    branches: HEAD
+#    start_path: privilege_escalation
+#  - url: .
+#    branches: HEAD
+#    start_path: metasploit
+#  - url: .
+#    branches: HEAD
+#    start_path: shell_spawn
   - url: .
     branches: HEAD
     start_path: exercises
+  - url: .
+    branches: HEAD
+    start_path: enumeration
 
 output:
   dir: ./output

@@ -54,6 +54,7 @@ done
 <function-name> () {
   <body>
 }
+```
 
 == Local variables
 

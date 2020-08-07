@@ -1,0 +1,9 @@
+Scan for rpc info across a range
+
+- `nmap -sV -p 111 --script=rpcinfo <IP_range>
+
+Run all NSE scripts
+
+- `nmap -p 111 --script nfs* <IP>`
+
+

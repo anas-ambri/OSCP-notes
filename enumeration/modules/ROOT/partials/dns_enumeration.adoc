@@ -1,0 +1,3 @@
+- `dnsrecon -d <domain> -t axfr` for DNS zone transfer
+- `dnsrecon -d <domain> -D <file> -t brt` for brute-force forward lookup
+- `dnsenum <domain>`

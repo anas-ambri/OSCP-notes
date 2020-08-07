@@ -1,0 +1,88 @@
+= Solutions to exercises from Chapter 7: Active Information Gathering
+
+== 7.1.6.3
+
+1.`host -t ns megacorpone.com`
+2. In Python
+```
+#Requires `pip install dnspython`
+
+import sys
+import dns.query
+import dns.zone
+import dns.exception
+import dns.resolver
+import socket
+
+hostnames = sys.argv[1:]
+for host in hostnames:
+  try:
+    answers = dns.resolver.query(host, 'NS')
+    for rdata in answers:
+      try:
+        ip = socket.gethostbyname(str(rdata))
+        print(ip+' '+str(rdata)+'\n')
+        z = dns.zone.from_xfr(dns.query.xfr(ip, host, timeout=1))
+        print('found something'+'\n')
+        names = z.nodes.keys()
+        names.sort()
+        for n in names:
+          print(z[n].to_text(n) +'\n')
+      except dns.exception.FormError:
+          print 'rejected'
+      except Exception, e:
+        print e
+  except Exception, e:
+    print e
+```
+3. `dnsrecon -d megacorpone.com -t axfr`
+
+== 7.2.2.9
+
+1. `nmap -sn -n -v 10.11.1.1-254 -oG ping_sweep.txt && grep Up ping_sweep.txt | awk '{print $2}'> ips_open.txt`
+2. `nmap -A -O -nvv -iL ips_open.txt -oG open_services.txt`
+3. `nmap --script=smb-enum-services.nse 10.11.1.1-254 -p445`
+4. With netcat, a UDP port is deemed opened when there is no response. For TCP, netcat sends a single SYN packet
+   NMap starts by sending an ICMP echo ping & timestamp requests, then a TCP SYN & ACK packets
+5. With an NMAP TCP scan, nmap sends an ACK back as part of the threeway handshake to SYN. 
+
+== 7.3.2.1
+
+1. `nmap -nvv -p445 --script=smb-os-discovery 10.11.1.1-24` reveals a Samba instance running on 10.11.1. Also, it reveals a Windows XP instance running on 10.11.1.5, and two Windows 10 instances on 10.11.1.23 & 10.11.1.24
+2. `nmap -nvv --script=smb-vuln-ms06-025.nse 10.11.1.1-24`
+3. `enum4linux 10.11.1.8 > output_samba.txt` && `sudo nbtscan -r 10.11.1.24`
+
+== 7.4.2.1
+
+1. `nmap -sV -nvv --script=rpcinfo -p111 10.11.1.1-24`
+2. `nmap -p 111 --script=nfs* -iL ips.txt`
+
+== 7.5.1.1
+
+1. `nmap --script smtp-commands.nse -pT:25,465,587 10.11.1.1-24 -oG ips.txt` list the commands accessible on each host
+2. In Python
+
+```
+import socket
+import sys
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+connect = s.connect(('10.11.1.217', 25))
+banner = s.recv(1024)
+print banner
+
+with open('usernames.txt') as f:
+  lines = f.readlines()
+  for line in lines:
+    print('testing ' + line)
+    s.send('VRFY' + line + '\r\n')
+    result = s.recv(1024)
+    print result
+
+s.close()
+```
+
+== 7.6.3.6
+
+1. `onesixtyone 10.11.1.0/24 public` reveals two IPs with SNMP response: `10.11.1.115` and `10.11.1.227`
+2. `snmpwalk -c public -v1 -t 10 10.11.1.115 && snmp-check -t 10 10.11.1.115`

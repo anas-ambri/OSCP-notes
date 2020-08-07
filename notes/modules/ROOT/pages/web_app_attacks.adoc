@@ -1,0 +1,23 @@
+= Web App attacks
+
+== Web App Enumeration
+
+=== Manually
+
+Enumeration can use page content, debugger for response headers, inspecting `robots.txt` & `sitemap.xml`, as well as admin consoles (phpmyadmin or tomcat)
+
+=== Tooling
+
+==== DIRB
+
+`dirb <URL> -r -z 10` non-recursive with 10ms delay between requests
+
+==== Nikto
+
+`nikto -host=<domain> -maxtime=Xs` will scan for X seconds. It is important to fine tune nikto with `-T`
+
+== Web app exploitation
+
+=== Admin consoles
+
+include::exploitation::partial$login_console_brute_force_burp.adoc[]
