@@ -29,6 +29,9 @@ content:
   - url: .
     branches: HEAD
     start_path: enumeration
+  - url: .
+    branches: HEAD
+    start_path: exploitation
 
 output:
   dir: ./output

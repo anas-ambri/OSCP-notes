@@ -1,0 +1,26 @@
+= Soutions to exercises from Module 8: Vulnerability Scanning
+
+== 8.2.4.2
+
+2. Nessus starts with an SNMP requests to get the text description of the device, then an ICMP ping request.
+Then:
+- If it finds that the host is running an SMB instance, it tries to enumerate on it
+- It does a SYN ping on every single TCP port. Every port that doesn't respond is treated as closed
+- On the most special ports (ike 139, 135, 8080, etc), it sends RST TCP packages as well
+- On ports that run an HTTP server, it does look for common pages (like the `/`, `/login.jsp`, etc.)
+- On ports that run an HTTP server, it then tries some path traversal attacks (by looking for `/..\..\..\windows\win.ini` file) or XSS attacks
+3. The scan reveals multiple PHP servers running old versions that are reported as critical issues. It also reports an unsupported Windows 7 Professional version
+
+== 8.2.5.2
+
+2. Nessus was able to identify multiple applications inside the instance that need to be updated to the latest version
+
+== 8.2.6.1
+
+2. Nessus scans other important ports, like `80` and `443`. Additionally, it is possible that Nessus needs to scan other ports to try to drown its intention to any potential defenses
+3. The results point to a potential NFS share that can be mounted.
+
+== 8.3.1.1
+
+1. `nmap -nvv --script nfs-ls 10.11.1.72`
+

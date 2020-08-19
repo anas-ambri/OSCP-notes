@@ -2,3 +2,6 @@
 * xref:module_3.adoc[Module 3]
 * xref:module_4.adoc[Module 4]
 * xref:module_5.adoc[Module 5]
+* xref:module_6.adoc[Module 6]
+* xref:module_7.adoc[Module 7]
+* xref:module_8.adoc[Module 8]

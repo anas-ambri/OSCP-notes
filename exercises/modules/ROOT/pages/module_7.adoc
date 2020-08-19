@@ -2,7 +2,8 @@
 
 == 7.1.6.3
 
-1.`host -t ns megacorpone.com`
+1. `host -t ns megacorpone.com`
+
 2. In Python
 ```
 #Requires `pip install dnspython`
@@ -35,6 +36,7 @@ for host in hostnames:
   except Exception, e:
     print e
 ```
+
 3. `dnsrecon -d megacorpone.com -t axfr`
 
 == 7.2.2.9
@@ -48,18 +50,18 @@ for host in hostnames:
 
 == 7.3.2.1
 
-1. `nmap -nvv -p445 --script=smb-os-discovery 10.11.1.1-24` reveals a Samba instance running on 10.11.1. Also, it reveals a Windows XP instance running on 10.11.1.5, and two Windows 10 instances on 10.11.1.23 & 10.11.1.24
-2. `nmap -nvv --script=smb-vuln-ms06-025.nse 10.11.1.1-24`
+1. `nmap -nvv -p445 --script=smb-os-discovery 10.11.1.1-254` reveals a Samba instance running on 10.11.1. Also, it reveals a Windows XP instance running on 10.11.1.5, and two Windows 10 instances on 10.11.1.23 & 10.11.1.24
+2. `nmap -nvv --script=smb-vuln-ms06-025.nse 10.11.1.1-254`
 3. `enum4linux 10.11.1.8 > output_samba.txt` && `sudo nbtscan -r 10.11.1.24`
 
 == 7.4.2.1
 
-1. `nmap -sV -nvv --script=rpcinfo -p111 10.11.1.1-24`
+1. `nmap -sV -nvv --script=rpcinfo -p111 10.11.1.1-254`
 2. `nmap -p 111 --script=nfs* -iL ips.txt`
 
 == 7.5.1.1
 
-1. `nmap --script smtp-commands.nse -pT:25,465,587 10.11.1.1-24 -oG ips.txt` list the commands accessible on each host
+1. `nmap --script smtp-commands.nse -pT:25,465,587 10.11.1.1-254 -oG ips.txt` list the commands accessible on each host
 2. In Python
 
 ```

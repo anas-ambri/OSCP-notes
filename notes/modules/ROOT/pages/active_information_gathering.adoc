@@ -85,4 +85,4 @@ SMTP runs on port 25. We can connect to it and ask it to verify the existence of
 
 SNMP uses UDP to configure the network. UDP is stateless, so easier for spoofing
 
-include::enumeration:partial$snmp_enumeration.adoc[]
+include::enumeration::partial$snmp_enumeration.adoc[]
