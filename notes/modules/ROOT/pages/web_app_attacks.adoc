@@ -2,22 +2,53 @@
 
 == Web App Enumeration
 
-=== Manually
+include::enumeration::partial$web_app_enumeration.adoc[]
 
-Enumeration can use page content, debugger for response headers, inspecting `robots.txt` & `sitemap.xml`, as well as admin consoles (phpmyadmin or tomcat)
+== XSS vulnerabilities
 
-=== Tooling
+=== Types
 
-==== DIRB
+- Stored XSS: exploit stored or cached by server. Payload is then displayed to any new visitor. 
+- Reflected XSS: when the payload is included in a link that the victim has to click on to load the exploit. Only the person viewing the link is attacked (as opposed to every visitor with stored XSS)
+- Dom-based XSS: when the payload is triggered as soon as the DOM is interpreted
 
-`dirb <URL> -r -z 10` non-recursive with 10ms delay between requests
+=== Enumeration
 
-==== Nikto
+Trying the characters `<>{}'";` in the inputs
 
-`nikto -host=<domain> -maxtime=Xs` will scan for X seconds. It is important to fine tune nikto with `-T`
+=== Exploitation
 
-== Web app exploitation
+- Load an image that submits session info to a remote listener
 
-=== Admin consoles
+== Directory travel vulns
 
-include::exploitation::partial$login_console_brute_force_burp.adoc[]
+=== Enumeration
+
+Query params linking to files are a good place to find these. 
+
+== File inclusion vulns
+
+=== Exploitation
+
+- Include a shell command in a file that can be included. For php, `<?php echo '<pre>' . shell_exec($_GET['cmd']) . '</pre>';?>` can be used.
+- Load the file in web app
+
+=== Webshells
+
+Webshells are programs in different server languages, used to start a shell from within the server. 
+They can be exposed using an HTTP server, and then loaded using Remote FI.
+
+=== Data wrappers
+
+PHP provides the possibility of wrapping user-supplied text into a wrapper that gets treated by the server as a file.
+This uses the format:
+
+`<url>?file=data:text/plain,<content>`
+
+== SQL injections
+
+=== Useful payloads
+
+`<value>' or 1=1 LIMIT 1;#`
+
+include::enumeration::partial$database_enumeration.adoc[]

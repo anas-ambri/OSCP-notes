@@ -16,6 +16,15 @@ include::partial$smb_enumeration.adoc[]
 
 include::partial$nfs_enumeration.adoc[]
 
-== SNMP
+== SNMP enumeration
 
 include::partial$snmp_enumeration.adoc[]
+
+== Web App enumeration
+
+include::partial$web_app_enumeration.adoc[]
+
+== Database enumeration
+
+include::partial$database_enumeration.adoc[]
+
