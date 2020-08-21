@@ -1,0 +1,15 @@
+= Buffer Overflows
+
+== Introduction
+
+=== CPU registers
+
+- EAX: Arithmetic 
+- EBX: Base pointer for memory addressing
+- ECX: counter
+- EDX: division & IO port addressing
+- ESI: source in string copy
+- EDI: destination in string copy
+- ESP: stack pointer (most recently referenced address on the stack)
+- EBP: base pointer before function call
+- EIP: instruction pointer (always points to next instruction)
